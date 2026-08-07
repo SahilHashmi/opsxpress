@@ -1,0 +1,86 @@
+{
+  "$schema": "https://schemas.wp.org/wp/6.4/theme.json",
+  "version": 2,
+  "settings": {
+    "appearanceTools": true,
+    "color": {
+      "defaultPalette": false,
+      "palette": [
+        {
+          "slug": "primary-blue",
+          "color": "#003366",
+          "name": "Primary Blue"
+        },
+        {
+          "slug": "primary-orange",
+          "color": "#F27B2C",
+          "name": "Primary Orange"
+        },
+        {
+          "slug": "light-bg",
+          "color": "#F3F0FF",
+          "name": "Light Background"
+        },
+        {
+          "slug": "white",
+          "color": "#FFFFFF",
+          "name": "White"
+        },
+        {
+          "slug": "black",
+          "color": "#000000",
+          "name": "Black"
+        },
+        {
+          "slug": "gray-light",
+          "color": "#E5E5E5",
+          "name": "Gray Light"
+        }
+      ]
+    },
+    "layout": {
+      "contentSize": "1200px",
+      "wideSize": "1400px"
+    },
+    "typography": {
+      "fontFamilies": [
+        {
+          "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+          "name": "System Font Stack",
+          "slug": "system"
+        }
+      ]
+    }
+  },
+  "styles": {
+    "color": {
+      "background": "#ffffff",
+      "text": "#000000"
+    },
+    "elements": {
+      "link": {
+        "color": {
+          "text": "#F27B2C"
+        }
+      },
+      "heading": {
+        "color": {
+          "text": "#003366"
+        },
+        "typography": {
+          "fontFamily": "var(--wp--preset--font-family--system)"
+        }
+      }
+    }
+  },
+  "templateParts": [
+    {
+      "name": "header",
+      "area": "header"
+    },
+    {
+      "name": "footer",
+      "area": "footer"
+    }
+  ]
+}

@@ -134,3 +134,17 @@
 .editor-styles-wrapper .alignfull {
 	max-width: none;
 }
+
+/* Dynamic block previews (opsxpress/header, hero, footer) */
+.editor-styles-wrapper .site-header {
+	position: static;
+}
+
+.editor-styles-wrapper .hero-section {
+	min-height: 60vh;
+	padding-top: 3rem;
+}
+
+.editor-styles-wrapper .components-disabled {
+	pointer-events: none;
+}

@@ -8,34 +8,7 @@
 	// Wait for DOM to be ready
 	document.addEventListener('DOMContentLoaded', function() {
 		
-		// Mobile Menu Toggle
-		const menuToggle = document.querySelector('.menu-toggle');
-		const mainNav = document.querySelector('.main-navigation');
 		const header = document.querySelector('.site-header');
-		let menuLinks = [];
-
-		function setMenuState(isOpen) {
-			menuToggle.setAttribute('aria-expanded', String(isOpen));
-			menuToggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
-			mainNav.setAttribute('aria-hidden', String(!isOpen));
-			mainNav.classList.toggle('is-open', isOpen);
-			menuToggle.classList.toggle('active', isOpen);
-			header.classList.toggle('menu-open', isOpen);
-			document.body.classList.toggle('menu-is-open', isOpen);
-			document.querySelector('.menu-label').textContent = isOpen ? 'Close' : 'Menu';
-		}
-		
-		if (menuToggle && mainNav) {
-			menuLinks = Array.from(mainNav.querySelectorAll('a'));
-			menuToggle.addEventListener('click', function() {
-				const willOpen = menuToggle.getAttribute('aria-expanded') !== 'true';
-				setMenuState(willOpen);
-				if (willOpen && menuLinks.length) window.setTimeout(function() { menuLinks[0].focus(); }, 500);
-			});
-			menuLinks.forEach(function(link) {
-				link.addEventListener('click', function() { setMenuState(false); });
-			});
-		}
 
 		const hero = document.querySelector('.hero-section');
 		if (hero && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -78,10 +51,8 @@
 		window.addEventListener('scroll', function() {
 			const currentScroll = window.pageYOffset;
 			
-			if (currentScroll > 100) {
-				header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
-			} else {
-				header.style.boxShadow = 'none';
+			if (header) {
+				header.style.boxShadow = currentScroll > 100 ? '0 2px 10px rgba(0, 0, 0, 0.1)' : 'none';
 			}
 			
 			lastScroll = currentScroll;
@@ -108,6 +79,35 @@
 			observer.observe(el);
 		});
 
+		// Reveal on scroll (CTA section + footer)
+		const revealElements = document.querySelectorAll('.reveal');
+		if (revealElements.length) {
+			if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+				revealElements.forEach(function(el) { el.classList.add('is-visible'); });
+			} else {
+				const revealObserver = new IntersectionObserver(function(entries) {
+					entries.forEach(function(entry) {
+						if (entry.isIntersecting) {
+							entry.target.classList.add('is-visible');
+							revealObserver.unobserve(entry.target);
+						}
+					});
+				}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+				revealElements.forEach(function(el) { revealObserver.observe(el); });
+			}
+		}
+
+		// Footer background video: guarantee muted autoplay
+		const footerVideo = document.querySelector('.footer-video');
+		if (footerVideo) {
+			footerVideo.muted = true;
+			const playAttempt = footerVideo.play();
+			if (playAttempt && typeof playAttempt.catch === 'function') {
+				playAttempt.catch(function() { /* autoplay blocked; gradient overlay remains */ });
+			}
+		}
+
 		// Form Validation (if needed)
 		const forms = document.querySelectorAll('form');
 		forms.forEach(function(form) {
@@ -129,15 +129,6 @@
 					alert('Please fill in all required fields.');
 				}
 			});
-		});
-
-		// Keyboard Navigation Enhancement
-		document.addEventListener('keydown', function(e) {
-			// ESC key closes mobile menu
-			if (e.key === 'Escape' && mainNav && mainNav.classList.contains('is-open')) {
-				setMenuState(false);
-				menuToggle.focus();
-			}
 		});
 
 		console.log('OpsXpress Theme loaded successfully');
